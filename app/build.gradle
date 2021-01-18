@@ -1,0 +1,98 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+// Set the properties within `local.properties` into a `Properties` class so
+// that values within `local.properties` (e.g. Maps API key) are accessible in
+// this file.
+Properties properties = new Properties()
+if (rootProject.file("local.properties").exists()) {
+    properties.load(rootProject.file("local.properties").newDataInputStream())
+}
+def mapsApiKey = properties.getProperty("MAPS_API_KEY", "")
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "workshop.mirceasoit.fallenmeteors"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read the API key from local.properties into R.string.maps_api_key
+        resValue "string", "maps_api_key", mapsApiKey
+
+        // To add your Maps API key to this project:
+        // 1. Open the root project's local.properties file
+        // 2. Add this line, where YOUR_API_KEY is your API key:
+        //        MAPS_API_KEY=YOUR_API_KEY
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+
+    //LiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    //ViewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    //Lifecycle extensions
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    //Activity library
+    implementation "androidx.activity:activity-ktx:1.1.0"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.5.0"
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //OkHttp3 Logging interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.1"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    //Mockito
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    androidTestImplementation 'org.mockito:mockito-android:2.28.2'
+    //Mockito Kotlin
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    //Mockk
+    testImplementation 'io.mockk:mockk:1.10.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7'
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

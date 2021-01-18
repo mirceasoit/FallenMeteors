@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="workshop.mirceasoit.fallenmeteors.view.Displayable" />
+
+        <variable
+            name="listener"
+            type="workshop.mirceasoit.fallenmeteors.view.MeteorsAdapter.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:onClick="@{() -> listener.onMeteorClick(data.meteor)}"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/meteor_image"
+            android:src="@drawable/ic_meteor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@{data.meteor.name}"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toTopOf="@id/image"
+            tools:text="Aarhus" />
+
+        <TextView
+            android:id="@+id/rec_class_label"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rec_class_label"
+            app:layout_constraintStart_toStartOf="@id/name"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="RecClass:" />
+
+        <TextView
+            android:id="@+id/rec_class_value"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{data.meteor.recClass}"
+            app:layout_constraintStart_toEndOf="@id/rec_class_label"
+            app:layout_constraintTop_toTopOf="@id/rec_class_label"
+            tools:text="H5" />
+
+        <TextView
+            android:id="@+id/mass_label"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mass_label"
+            app:layout_constraintStart_toStartOf="@id/rec_class_label"
+            app:layout_constraintTop_toBottomOf="@id/rec_class_label"
+            tools:text="Mass:" />
+
+        <TextView
+            android:id="@+id/mass_value"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{data.meteor.mass}"
+            app:layout_constraintStart_toEndOf="@id/mass_label"
+            app:layout_constraintTop_toTopOf="@id/mass_label"
+            tools:text="720" />
+
+        <TextView
+            android:id="@+id/year_label"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/year_label"
+            app:layout_constraintStart_toStartOf="@id/rec_class_label"
+            app:layout_constraintTop_toBottomOf="@id/mass_label"
+            tools:text="Year:" />
+
+        <TextView
+            android:id="@+id/year_value"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{data.meteor.year.substring(0, 4)}"
+            app:layout_constraintStart_toEndOf="@id/year_label"
+            app:layout_constraintTop_toTopOf="@id/year_label"
+            tools:text="1980" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

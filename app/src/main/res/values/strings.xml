@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Fallen Meteors</string>
+    <string name="meteor_image">meteor image</string>
+    <string name="meteor_click_message">Meteor have been clicked</string>
+    <string name="year_label">Year:</string>
+    <string name="mass_label">Mass:</string>
+    <string name="rec_class_label">RecClass:</string>
+    <string name="action_refresh">refresh</string>
+</resources>
