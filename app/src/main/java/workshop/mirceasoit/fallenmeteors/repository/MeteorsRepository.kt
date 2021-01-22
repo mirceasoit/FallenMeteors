@@ -42,13 +42,13 @@ class MeteorsRepository {
     }
 
     private fun handleResults(list: List<Meteor>) {
-        dataResponseCallback!!.onSuccess(list)
-        disposable!!.dispose()
+        dataResponseCallback?.onSuccess(list)
+        disposable?.dispose()
     }
 
     private fun handleError(t: Throwable) {
-        dataResponseCallback!!.onError(t.message!!)
-        disposable!!.dispose()
+        dataResponseCallback?.onError(t.message!!)
+        disposable?.dispose()
     }
 
     suspend fun getMeteorsWithSuspendFunction(): MeteorsViewModel.State {

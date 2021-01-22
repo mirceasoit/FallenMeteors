@@ -8,10 +8,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import workshop.mirceasoit.fallenmeteors.R
 import workshop.mirceasoit.fallenmeteors.databinding.ActivityMeteorsBinding
 import workshop.mirceasoit.fallenmeteors.model.Meteor
+import workshop.mirceasoit.fallenmeteors.repository.MeteorsRepository
 import workshop.mirceasoit.fallenmeteors.view.MapActivity.Companion.LAT_KEY
 import workshop.mirceasoit.fallenmeteors.view.MapActivity.Companion.LON_KEY
 import workshop.mirceasoit.fallenmeteors.view.MapActivity.Companion.NAME_KEY
@@ -20,7 +23,14 @@ import workshop.mirceasoit.fallenmeteors.viewmodel.MeteorsViewModel
 class MeteorsActivity : AppCompatActivity() {
 
     private lateinit var adapter: MeteorsAdapter
-    private val _viewModel: MeteorsViewModel by viewModels()
+    private val _viewModel: MeteorsViewModel by viewModels {
+        object :
+            ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return MeteorsViewModel(MeteorsRepository()) as T
+            }
+        }
+    }
     private lateinit var binding: ActivityMeteorsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,14 +48,13 @@ class MeteorsActivity : AppCompatActivity() {
                 }
             }
         })
-        binding = DataBindingUtil.setContentView(this,
+        binding = DataBindingUtil.setContentView<ActivityMeteorsBinding>(this,
                 R.layout.activity_meteors
-        )
-        binding.let {
-            it.viewmodel = _viewModel
-            it.lifecycleOwner = this
-            it.content.layoutManager = GridLayoutManager(this, 1)
-            it.content.adapter = adapter
+        ).apply {
+            viewmodel = _viewModel
+            lifecycleOwner = this@MeteorsActivity
+            content.layoutManager = GridLayoutManager(this@MeteorsActivity, 1)
+            content.adapter = adapter
         }
         loadMeteors()
     }

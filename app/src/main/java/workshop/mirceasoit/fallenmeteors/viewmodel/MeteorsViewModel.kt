@@ -8,9 +8,7 @@ import kotlinx.coroutines.launch
 import workshop.mirceasoit.fallenmeteors.model.Meteor
 import workshop.mirceasoit.fallenmeteors.repository.MeteorsRepository
 
-class MeteorsViewModel : ViewModel() {
-
-    private val meteorsRepository = MeteorsRepository()
+class MeteorsViewModel (private val meteorsRepository: MeteorsRepository) : ViewModel() {
 
     private var _meteors = MutableLiveData<State>()
     var meteors: LiveData<State> = _meteors

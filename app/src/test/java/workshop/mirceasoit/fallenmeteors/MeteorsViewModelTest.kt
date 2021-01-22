@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -64,7 +65,7 @@ internal class MeteorsViewModelTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         MockKAnnotations.init(this)
-        viewModel = MeteorsViewModel()
+        viewModel = MeteorsViewModel(meteorsRepository)
         viewModel.meteors.observeForever(meteorsObserver)
     }
 
@@ -74,15 +75,15 @@ internal class MeteorsViewModelTest {
 
         val loading = MeteorsViewModel.State.Loading
 
-        every { meteorsRepository.getMeteors(MockitoHelper.anyObject()) } answers {
-            firstArg<MeteorsRepository.DataResponseCallback>().onSuccess(meteors)
+        val slot = slot<MeteorsRepository.DataResponseCallback>()
+
+        every { meteorsRepository.getMeteors(capture(slot)) } answers {
+            slot.captured.onSuccess(meteors)
         }
 
         viewModel.getMeteors()
 
         Mockito.verify(meteorsObserver).onChanged(loading)
-
-        viewModel.getMeteorsCallback.onSuccess(meteors)
 
         Mockito.verify(meteorsObserver).onChanged(success)
     }
@@ -93,15 +94,15 @@ internal class MeteorsViewModelTest {
 
         val loading = MeteorsViewModel.State.Loading
 
-        every { meteorsRepository.getMeteors(MockitoHelper.anyObject()) } answers {
-            firstArg<MeteorsRepository.DataResponseCallback>().onError(ERROR_MESSAGE)
+        val slot = slot<MeteorsRepository.DataResponseCallback>()
+
+        every { meteorsRepository.getMeteors(capture(slot)) } answers {
+            slot.captured.onError(error.error)
         }
 
         viewModel.getMeteors()
 
         Mockito.verify(meteorsObserver).onChanged(loading)
-
-        viewModel.getMeteorsCallback.onError(ERROR_MESSAGE)
 
         Mockito.verify(meteorsObserver).onChanged(error)
     }
@@ -112,15 +113,15 @@ internal class MeteorsViewModelTest {
 
         val loading = MeteorsViewModel.State.Loading
 
-        every { meteorsRepository.getMeteorsWithRxJava(MockitoHelper.anyObject()) } answers {
-            firstArg<MeteorsRepository.DataResponseCallback>().onSuccess(meteors)
+        val slot = slot<MeteorsRepository.DataResponseCallback>()
+
+        every { meteorsRepository.getMeteorsWithRxJava(capture(slot)) } answers {
+            slot.captured.onSuccess(meteors)
         }
 
         viewModel.getMeteorsWithRxJava()
 
         Mockito.verify(meteorsObserver).onChanged(loading)
-
-        viewModel.getMeteorsCallback.onSuccess(meteors)
 
         Mockito.verify(meteorsObserver).onChanged(success)
     }
@@ -131,15 +132,15 @@ internal class MeteorsViewModelTest {
 
         val loading = MeteorsViewModel.State.Loading
 
-        every { meteorsRepository.getMeteorsWithRxJava(MockitoHelper.anyObject()) } answers {
-            firstArg<MeteorsRepository.DataResponseCallback>().onError(ERROR_MESSAGE)
+        val slot = slot<MeteorsRepository.DataResponseCallback>()
+
+        every { meteorsRepository.getMeteorsWithRxJava(capture(slot)) } answers {
+            slot.captured.onError(error.error)
         }
 
         viewModel.getMeteorsWithRxJava()
 
         Mockito.verify(meteorsObserver).onChanged(loading)
-
-        viewModel.getMeteorsCallback.onError(ERROR_MESSAGE)
 
         Mockito.verify(meteorsObserver).onChanged(error)
     }
